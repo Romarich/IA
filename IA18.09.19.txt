@@ -1,0 +1,139 @@
+//Difference entre shallow learning et deeplearning
+-> deeplearning il faut enormement de données pour le test => genre des millions
+-> le shallow learning moi genre 1000-1500
+
+
+'On importe les librairies'
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+'on utilise un jeu de donnée de chiffres'
+
+from sklearn.datasets import load_digits
+digits = load_digits()
+
+
+digits.keys()
+Out[6]: dict_keys(['data', 'target', 'target_names', 'images', 'DESCR'])
+
+digits.data
+Out[7]: 
+array([[ 0.,  0.,  5., ...,  0.,  0.,  0.],
+       [ 0.,  0.,  0., ..., 10.,  0.,  0.],
+       [ 0.,  0.,  0., ..., 16.,  9.,  0.],
+       ...,
+       [ 0.,  0.,  1., ...,  6.,  0.,  0.],
+       [ 0.,  0.,  2., ..., 12.,  0.,  0.],
+       [ 0.,  0., 10., ..., 12.,  1.,  0.]])
+
+// ici c'est la taille de l'ensemble
+// 17978*8
+digits.data.shape
+Out[8]: (1797, 64)
+
+digits.data[0]
+Out[9]: 
+array([ 0.,  0.,  5., 13.,  9.,  1.,  0.,  0.,  0.,  0., 13., 15., 10.,
+       15.,  5.,  0.,  0.,  3., 15.,  2.,  0., 11.,  8.,  0.,  0.,  4.,
+       12.,  0.,  0.,  8.,  8.,  0.,  0.,  5.,  8.,  0.,  0.,  9.,  8.,
+        0.,  0.,  4., 11.,  0.,  1., 12.,  7.,  0.,  0.,  2., 14.,  5.,
+       10., 12.,  0.,  0.,  0.,  0.,  6., 13., 10.,  0.,  0.,  0.])
+//fonctionne pas car il y a un soucis de taille car c'est un tableau a une dimension ca ne va pas
+plt.imshow(digits.data[0])
+//permet d'afficher l'image
+plt.imshow(digits.data[0].reshape(8,8))
+Out[10]: <matplotlib.image.AxesImage at 0x20a9226a710>
+// voir Image1.bmp
+//permet de voir en noir et blanc => cmap='binary'
+plt.imshow(digits.data[0].reshape(8,8), cmap='binary')
+Out[11]: <matplotlib.image.AxesImage at 0x20a9223d2e8>
+//Voir Image2.bmp
+
+
+
+//permet de verifier quel chiffre est mis dans le bitmap
+In[12]: digits.target[1456]
+Out[12]: 4
+
+//ici on cree un classificateur
+from sklearn.tree import DecisionTreeClassifier
+classifier = DecisionTreeClassifier()
+//en python on peut juste mettre le nom de l'element et ça l'affiche pas besoin de print
+classifier
+Out[17]: 
+DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=None,
+            splitter='best')
+
+//la on lui apprend a trier des chiffres
+features = digits.data
+labels = digits.target
+classifier.fit(features,labels)
+Out[20]: 
+DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=None,
+            splitter='best')
+
+//pour tester on fait comme ça
+classifier.predict([features[0]])
+Out[21]: array([0])
+
+//features[0] => tableau a 1 dimension
+//[features[0]]=> tableau a 2 dimension
+
+//ça c'est pour savoir cb de % de reussite on a.
+In[29]: classifier.score(features, labels)
+Out[29]: 1.0
+
+//ici on a 1 car on a créé le set pour creer le Classifier
+// et apres on fait le test avec le meme jeu de données
+
+//du coup il faut diviser en deux le dataset : Training et Test
+from sklearn.model_selection import train_test_split
+features_train, features_test, labels_train, labels_test = train_test_split(features,labels)
+
+//ici on divise le set en 4 en 1 ligne
+
+//du coup on retest en divisant
+classifier.fit(features_train, labels_train)
+Out[32]: 
+DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=None,
+            splitter='best')
+
+classifier.score(features_test, labels_test)
+Out[33]: 0.8333333333333334
+
+//et donc on arrive a 83,3% de chance d'avoir le bon nombre
+
+from sklearn.metrics import confusion_matrix
+labels_pred = classifier.predict(features_test)
+labels_true = labels_test
+confusion_matrix(labels_test,labels_pred)
+Out[37]: 
+array([[43,  0,  1,  0,  0,  1,  1,  0,  0,  0],
+       [ 0, 32,  4,  0,  1,  0,  2,  0,  1,  2],
+       [ 1,  2, 33,  0,  0,  0,  1,  0,  1,  0],
+       [ 0,  0,  1, 30,  0,  0,  0,  0,  3,  2],
+       [ 1,  2,  0,  0, 42,  3,  2,  1,  1,  0],
+       [ 0,  0,  0,  0,  0, 43,  0,  0,  3,  1],
+       [ 0,  0,  1,  0,  0,  0, 40,  0,  0,  0],
+       [ 0,  1,  0,  0,  2,  0,  0, 36,  0,  4],
+       [ 0,  4,  2,  3,  0,  2,  0,  1, 31,  6],
+       [ 0,  1,  0,  1,  1,  4,  0,  2,  2, 45]], dtype=int64)
+
+//Confusion_Matrix => c'est pour montrer ce qui a bien fonctionner
+//43 c'est le nombre de fois ou il a trouvé 0 et que c'etait 0
+
+//-> chapitre2 => resumé des 8 phases et faire un schéma aussi
+//-> premier chapitre => complement => tuto sur panda et autres
