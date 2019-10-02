@@ -40,24 +40,34 @@ accuracy_nsplb = accuracy_score(labels_test, labels_pred_nsplb)
 
 print ("Accuracy NSPLB = ", accuracy_nsplb)
 
-from sklearn.metrics import confusion_matrix
+#from sklearn.metrics import confusion_matrix
 
-print("confusion_matrice_moc")
-confusion_matrice_moc = confusion_matrix(labels_test,labels_pred_moc)
-print(confusion_matrice_moc)
+#print("confusion_matrice_moc")
+#confusion_matrice_moc = confusion_matrix(labels_test,labels_pred_moc)
+#print(confusion_matrice_moc)'
 
-print("confusion_matrice_nsplb")
-confusion_matrice_nsplb = confusion_matrix(labels_test,labels_pred_nsplb)
-print(confusion_matrice_nsplb)
+#print("confusion_matrice_nsplb")
+#confusion_matrice_nsplb = confusion_matrix(labels_test,labels_pred_nsplb)
+#print(confusion_matrice_nsplb)
+#
+#from sklearn.metrics import precision_score, recall_score
+#print("metrique de précision moc")
+#print(precision_score(labels_test,labels_pred_moc))
+#print("metrique de précision nsplb")
+#print(precision_score(labels_test,labels_pred_nsplb))
+#
+#print("metrique de recall moc")
+#print(recall_score(labels_test,labels_pred_moc))
+#print("metrique de recall nsplb")
+#print(recall_score(labels_test,labels_pred_nsplb))
+#
+#print(features.info())
 
-from sklearn.metrics import precision_score, recall_score
-print("metrique de précision moc")
-print(precision_score(labels_test,labels_pred_moc))
-print("metrique de précision nsplb")
-print(precision_score(labels_test,labels_pred_nsplb))
-
-print("metrique de recall moc")
-print(recall_score(labels_test,labels_pred_moc))
-print("metrique de recall nsplb")
-print(recall_score(labels_test,labels_pred_nsplb))
+from sklearn.neighbors import NearestNeighbors
+import sys
+import numpy
+nbrs = NearestNeighbors(n_neighbors=2, algorithm='ball_tree').fit(features_train,labels_train)
+numpy.set_printoptions(threshold=sys.maxsize)
+#print(nbrs.kneighbors(features_train))
+print(nbrs.kneighbors_graph(features_test).toarray())
 
