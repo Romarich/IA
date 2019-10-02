@@ -1,0 +1,7 @@
+On utilise la cross-validation pour maximiser les performances et avoir un ratio qui s approche le plus possible de 1 donc c'est à dire on divise en un certain nombre k le set de data et ensuite pour chaque K on fait une itération en testant le training set avec le test set. Et on compare ensuite pour trouver le meilleur training set.
+
+Un faux positif c'est lorsque le classificateur prédit que le test va être positif alors que la condition est négative.
+
+Matrice de confusion permet de voir avec des chiffres les moments ou l'algorithme s'est trompé et où ça. Par exemple,ici sur le graphe le label recherché etait versicolor mais pourtant l'ia a prédit virginica et on voit qu'il s'est trompé 6 fois. Les chiffres en diagonale du haut à gauche au bas à droite sont les parties réussie.
+
+Intuitivement le recall mesure le nombre de fois .
