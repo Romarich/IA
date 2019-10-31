@@ -1,0 +1,61 @@
+Processus décisionnel Markovien(MDP) :
+	Apprentissage supervizé : la machine apprend les relations entre les
+	entrées x et les sorties y.
+	
+	Non supervisé : la machine apprend toute seule la structure dans le
+	paquet de données. => c'est le Graal de l'apprentissage
+
+	Par renforcement : la machine prend des decisions et teste
+	l'environnement.
+		3 soucis :		
+			- Essais-Erreur => obligé d'agir pour apprendre
+			- Exploration ou exploitation ? comment savoir si
+				on a trouvé le mieux ?
+			- Recompenses retardés : on gagne qqch mais bcp plus
+				tard et ça prend du temps.
+
+	Pour modéliser un problème, on utilise les MDP(processus decisionnels
+	markoviens). $\{ S,A,T,R }\$
+		$S$ = espace des etats, $A$ = espace des actions
+		$T$ = axe temporel, $R$ = recompenses
+		$P$ = espace des transitions
+
+	L'agent permet de maximiser sa récompense.
+	La recompense c'est donc toutes les récompenses additionnées.
+	Mais c'est injuste de donner tout sur le dernier coup si c'est
+	celui-ci qui est récompensé donc on fait la récompense additionnées
+	mais on divise par le nombre de coup.
+	
+	Politique de l'agent a l'instant t $\pi_t$ c'est une application de
+	l'espace des etats dans A qui va definir le comportement en l'apprenant
+	$\pi^*$ => stratégie optimale pour un MDP donné est une politique qui
+		maximise le gain.
+
+	Principe d'optimalité de Bellman => principe du diamant on trouve les solutions optimales a tous les petits sous-probleme qui sont contenu dans le grand.
+
+	Algorithme d'itération de la valeur
+
+
+Initialiser $V_0$
+$n \leftarrow 0$
+Tant que  $||V_{n+1} - V|| > \epsilon $ faire
+	Pour $s \in S$ faire
+		$V_{n+1}(s)=\max _{a}\left(R(s, a) + \gamma \sum_{s^{\prime}} P\left(s, a, s^{\prime}\right) V_{n}\left(s^{\prime}\right)\right)$
+	Fin pour
+	$n \leftarrow n+1$
+Fin tant que
+Pour $s \in S$ faire
+	$\pi^*(s)=\text{arg max} _{a}\left(R(s, a) + \gamma \; V^*\left(s^{\prime}\right)\right)$
+Fin pour
+Retourner $V_n, \pi$
+
+
+
+# P[s][a] = (prob, next_state, reward, is_done)
+# a = 0 -> up
+# a = 1 -> right
+# a = 2 -> down
+# a = 3 -> left
+
+print(env.P[0][2])
+print(env.P[13][0])
